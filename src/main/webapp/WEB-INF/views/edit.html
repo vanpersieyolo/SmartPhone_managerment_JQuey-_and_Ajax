@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Edit Smartphone</title>
+
+</head>
+<body>
+<div id="container">
+    <h1>Edit Smartphone</h1>
+    <div>
+        <p>Here you can edit Smartphone info:</p>
+        <div id="sPhoneFromResponse"></div>
+    </div>
+    <form id="editSmartphoneForm" th:object="${sPhone}">
+        <table>
+            <tbody>
+            <tr>
+                <td>Producer:</td>
+                <td>
+                    <select id="producer" th:field="*{producer}">
+                        <option value="NOKIA">Nokia</option>
+                        <option value="IPHONE">iPhone</option>
+                        <option value="HTC">HTC</option>
+                        <option value="SAMSUNG">Samsung</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Model:</td>
+                <td><input th:field="*{model}" id="model"/></td>
+                <td><input th:field="*{id}" id="id" hidden></td>
+            </tr>
+            <tr>
+                <td>Price:</td>
+                <td><input th:field="*{price}" id="price"/></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Edit" onclick="editSmartphone()"/></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <a th:href="@{/smartphones}">List</a>
+</div>
+</body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function editSmartphone(){
+        // var id = $('#id').val();
+        var producer = $('#producer').val();
+        var model = $('#model').val();
+        var price = $('#price').val();
+
+        var newSmartphone = {
+            // id : id,
+            producer :producer,
+            model:model,
+            price:price
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+                // url: "smartphones/edit/"+id,
+                url:$("#editSmartphoneForm").attr("action"),
+                data: JSON.stringify(newSmartphone),
+                type: "POST",
+                success: function (smartphone) {
+                    var respContent = "";
+                    respContent += "<span class='success'>Smartphone was edited: [";
+                    respContent += smartphone.producer + " : ";
+                    respContent += smartphone.model + " : ";
+                    respContent += smartphone.price + "]</span>";
+                    $("#sPhoneFromResponse").html(respContent);
+                },
+                error: function (){
+                    $("#sPhoneFromResponse").html("not success");
+                }
+
+        });
+        event.preventDefault();
+    }
+    // $(document).ready(function () {
+    //     $('#editSmartphoneForm').submit(function (event) {
+    //         // var id = $('#id').val();
+    //         var producer = $('#producer').val();
+    //         var model = $('#model').val();
+    //         var price = $('#price').val();
+    //         var json = {"producer":producer, "model":model, "price":price};
+    //         $.ajax({
+    //             url:$("#editSmartphoneForm").attr("action"),
+    //             data: JSON.stringify(json),
+    //             type: "POST",
+    //
+    //             beforeSend: function (xhr) {
+    //                 xhr.setRequestHeader("Accept", "application/json");
+    //                 xhr.setRequestHeader("Content-Type", "application/json");
+    //             },
+    //             success: function (smartphone) {
+    //                 var respContent = "";
+    //                 respContent += "<span class='success'>Smartphone was edited: [";
+    //                 respContent += smartphone.producer + " : ";
+    //                 respContent += smartphone.model + " : ";
+    //                 respContent += smartphone.price + "]</span>";
+    //                 $("#sPhoneFromResponse").html(respContent);
+    //             }
+    //         });
+    //         event.preventDefault();
+    //     });
+    // });
+</script>
+</html>
