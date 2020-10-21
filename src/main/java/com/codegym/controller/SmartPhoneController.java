@@ -26,8 +26,8 @@ public class SmartPhoneController {
     }
     @PostMapping(value = "create",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public SmartPhone saveSmartphone(@RequestBody SmartPhone smartPhone){
-        return smartphoneService.save(smartPhone);
+    public ResponseEntity<SmartPhone> saveSmartphone(@RequestBody SmartPhone smartPhone){
+        return new ResponseEntity<>(smartphoneService.save(smartPhone),HttpStatus.OK);
     }
     @GetMapping(value = "",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -37,7 +37,7 @@ public class SmartPhoneController {
 //    @GetMapping("")
 //    @ResponseBody
 //    public ResponseEntity<Iterable<SmartPhone>> listSmartphone(){
-//        return new ResponseEntity<>(smartphoneService.findAll());
+//        return new ResponseEntity<>(smartphoneService.findAll(),HttpStatus.OK);
 //    }
     @GetMapping("")
     public String allPhonePage(Model model){
@@ -57,8 +57,8 @@ public class SmartPhoneController {
     }
     @PostMapping(value = "/edit/{id}",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public SmartPhone editSmartPhone(@RequestBody SmartPhone smartPhone, @PathVariable Integer id){
+    public ResponseEntity<SmartPhone> editSmartPhone(@RequestBody SmartPhone smartPhone, @PathVariable Integer id){
         smartPhone.setId(id);
-        return smartphoneService.save(smartPhone);
+        return new ResponseEntity<>(smartphoneService.save(smartPhone),HttpStatus.OK);
     }
 }
